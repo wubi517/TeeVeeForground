@@ -1,0 +1,58 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground",
+      "sdkFolder": "D:\\AndroidSdk",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "ideBuildTargetAbi": "armeabi-v7a,armeabi",
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\build\\intermediates",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app",
+      "makeFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\src\\main\\jni\\Android.mk",
+      "buildSystem": "NDK_BUILD",
+      "compilerSettingsCacheFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\.cxx",
+      "cxxFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx",
+      "ndkFolder": "D:\\AndroidSdk\\ndk-bundle",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [],
+    "cFlagList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "soFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\build\\intermediates\\ndkBuild\\debug\\lib",
+    "objFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\build\\intermediates\\ndkBuild\\debug\\obj\\local",
+    "jsonFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug",
+    "gradleBuildOutputFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\cxx\\debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARMEABI_V7A",
+  "abiPlatformVersion": 21,
+  "cxxBuildFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a",
+  "jsonFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\cxx\\debug\\armeabi-v7a",
+  "objFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\build\\intermediates\\ndkBuild\\debug\\obj\\local\\armeabi-v7a",
+  "buildCommandFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\build_command.txt",
+  "buildOutputFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\build_output.txt",
+  "modelOutputFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\build_model.json",
+  "jsonGenerationLoggingRecordFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\json_generation_record.json",
+  "compileCommandsJsonFile": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\ndkBuild\\debug\\armeabi-v7a\\compile_commands.json"
+}

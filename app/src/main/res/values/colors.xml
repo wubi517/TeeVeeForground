@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#736f6f</color>
+    <color name="red">#DE0303</color>
+    <color name="welcome_color">#eda804</color>
+    <color name="trans_parent">#00000000</color>
+    <color name="yellow">#ffff00</color>
+    <color name="epg_event_layout_background_selected">#010630</color>
+    <color name="channel_color">#18477f</color>
+    <color name="land_bg_color">#121212</color>
+    <color name="epg_title">#a1b8e0</color>
+    <color name="homescreen_textcolor">#FFFFFF</color>
+    <color name="settings_popup_color">#2D2D2D</color>
+    <color name="settings_popup_selected_color">#1F4588</color>
+    <color name="channel_cat_focus_color">#9511a2f7</color>
+    <color name="channel_pressed_color">#4F63D2</color>
+    <color name="colorGreen">#ff8ecc50</color>
+</resources>

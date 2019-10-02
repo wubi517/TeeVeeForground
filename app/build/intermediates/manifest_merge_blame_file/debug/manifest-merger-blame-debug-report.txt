@@ -1,0 +1,331 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:amazon="http://schemas.amazon.com/apk/res/android"
+3    xmlns:android="http://schemas.android.com/apk/res/android"
+4    package="com.it_tech613.zhe.teevee"
+5    android:versionCode="4"
+6    android:versionName="1.3" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="21"
+9-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml
+10        android:targetSdkVersion="28" />
+10-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml
+11
+12    <permission
+12-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:7:5-9:47
+13        android:name=".permission.RECEIVE_ADM_MESSAGE"
+13-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:8:9-55
+14        android:protectionLevel="signature" />
+14-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:9:9-44
+15
+16    <uses-permission android:name=".permission.RECEIVE_ADM_MESSAGE" />
+16-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:11:5-71
+16-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:11:22-68
+17    <uses-permission android:name="com.amazon.device.messaging.permission.RECEIVE" />
+17-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:12:5-86
+17-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:12:22-83
+18    <uses-permission android:name="android.permission.WAKE_LOCK" />
+18-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:13:5-68
+18-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:13:22-65
+19    <uses-permission android:name="android.permission.INTERNET" />
+19-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:15:5-67
+19-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:15:22-64
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:16:5-79
+20-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:16:22-76
+21    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+21-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:17:5-76
+21-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:17:22-73
+22    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+22-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:18:5-81
+22-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:18:22-78
+23    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+23-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:19:5-80
+23-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:19:22-77
+24    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+24-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:20:5-83
+24-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:20:22-80
+25
+26    <application
+26-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:22:5-160:19
+27        android:name="com.it_tech613.zhe.teevee.apps.MyApp"
+27-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:23:9-35
+28        android:allowBackup="true"
+28-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:24:9-35
+29        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+29-->[com.android.support:support-compat:28.0.0] C:\Users\kimcm\.gradle\caches\transforms-2\files-2.1\032b978849b6677a82ed4c3ba175003a\support-compat-28.0.0\AndroidManifest.xml:22:18-91
+30        android:debuggable="true"
+31        android:hardwareAccelerated="false"
+31-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:31:9-44
+32        android:icon="@drawable/icon"
+32-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:25:9-38
+33        android:label="@string/app_name"
+33-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:26:9-41
+34        android:roundIcon="@drawable/icon"
+34-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:27:9-43
+35        android:supportsRtl="true"
+35-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:28:9-35
+36        android:testOnly="true"
+37        android:theme="@style/AppTheme"
+37-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:29:9-40
+38        android:usesCleartextTraffic="true" >
+38-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:30:9-44
+39        <activity
+39-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:34:9-37:58
+40            android:name="com.it_tech613.zhe.teevee.activity.MultiScreenActivity"
+40-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:35:13-57
+41            android:screenOrientation="landscape"
+41-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:36:13-50
+42            android:theme="@style/AppTheme.NoActionBar" />
+42-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:37:13-56
+43        <activity
+43-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:39:9-42:59
+44            android:name="com.it_tech613.zhe.teevee.activity.WebViewActivity"
+44-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:40:13-53
+45            android:screenOrientation="landscape"
+45-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:41:13-50
+46            android:theme="@style/AppTheme.NoActionBar" />
+46-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:42:13-56
+47        <activity
+47-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:43:9-45:90
+48            android:name="com.it_tech613.zhe.teevee.activity.MyDialogActivity"
+48-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:44:13-54
+49            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog.NoActionBar" />
+49-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:45:13-88
+50        <activity
+50-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:47:9-56:20
+51            android:name="com.it_tech613.zhe.teevee.MainActivity"
+51-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:48:13-41
+52            android:screenOrientation="landscape"
+52-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:49:13-50
+53            android:theme="@style/AppTheme.NoActionBar" >
+53-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:50:13-56
+54            <intent-filter>
+54-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:51:13-55:29
+55                <action android:name="android.intent.action.MAIN" />
+55-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:52:17-69
+55-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:52:25-66
+56
+57                <category android:name="android.intent.category.LAUNCHER" />
+57-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:54:17-77
+57-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:54:27-74
+58            </intent-filter>
+59        </activity>
+60        <activity
+60-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:57:9-60:59
+61            android:name="com.it_tech613.zhe.teevee.activity.LoginAcitivity"
+61-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:58:13-52
+62            android:screenOrientation="landscape"
+62-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:59:13-50
+63            android:theme="@style/AppTheme.NoActionBar" />
+63-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:60:13-56
+64        <activity
+64-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:61:9-64:59
+65            android:name="com.it_tech613.zhe.teevee.activity.WelcomeActivity"
+65-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:62:13-53
+66            android:screenOrientation="landscape"
+66-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:63:13-50
+67            android:theme="@style/AppTheme.NoActionBar" />
+67-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:64:13-56
+68        <activity
+68-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:65:9-68:59
+69            android:name="com.it_tech613.zhe.teevee.activity.ConnectionErrorActivity"
+69-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:66:13-61
+70            android:screenOrientation="landscape"
+70-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:67:13-50
+71            android:theme="@style/AppTheme.NoActionBar" />
+71-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:68:13-56
+72        <activity
+72-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:69:9-72:59
+73            android:name="com.it_tech613.zhe.teevee.activity.EmptyActivity"
+73-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:70:13-51
+74            android:screenOrientation="landscape"
+74-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:71:13-50
+75            android:theme="@style/AppTheme.NoActionBar" />
+75-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:72:13-56
+76        <activity
+76-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:73:9-76:59
+77            android:name="com.it_tech613.zhe.teevee.activity.PreviewChannelActivity"
+77-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:74:13-60
+78            android:screenOrientation="landscape"
+78-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:75:13-50
+79            android:theme="@style/AppTheme.NoActionBar" />
+79-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:76:13-56
+80        <activity
+80-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:77:9-80:59
+81            android:name="com.it_tech613.zhe.teevee.activity.GuideActivity"
+81-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:78:13-51
+82            android:screenOrientation="landscape"
+82-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:79:13-50
+83            android:theme="@style/AppTheme.NoActionBar" />
+83-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:80:13-56
+84        <activity
+84-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:81:9-84:59
+85            android:name="com.it_tech613.zhe.teevee.activity.PreviewVodActivity"
+85-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:82:13-56
+86            android:screenOrientation="landscape"
+86-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:83:13-50
+87            android:theme="@style/AppTheme.NoActionBar" />
+87-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:84:13-56
+88        <activity
+88-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:85:9-88:59
+89            android:name="com.it_tech613.zhe.teevee.activity.VideoPlayActivity"
+89-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:86:13-55
+90            android:screenOrientation="landscape"
+90-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:87:13-50
+91            android:theme="@style/AppTheme.NoActionBar" />
+91-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:88:13-56
+92        <activity
+92-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:89:9-92:59
+93            android:name="com.it_tech613.zhe.teevee.activity.PreviewSeriesActivity"
+93-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:90:13-59
+94            android:screenOrientation="landscape"
+94-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:91:13-50
+95            android:theme="@style/AppTheme.NoActionBar" />
+95-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:92:13-56
+96        <activity
+96-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:93:9-96:59
+97            android:name="com.it_tech613.zhe.teevee.activity.SeriesCatActivity"
+97-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:94:13-55
+98            android:screenOrientation="landscape"
+98-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:95:13-50
+99            android:theme="@style/AppTheme.NoActionBar" />
+99-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:96:13-56
+100        <activity
+100-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:97:9-100:59
+101            android:name="com.it_tech613.zhe.teevee.activity.SeriesPlayActivity"
+101-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:98:13-56
+102            android:screenOrientation="landscape"
+102-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:99:13-50
+103            android:theme="@style/AppTheme.NoActionBar" />
+103-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:100:13-56
+104        <activity
+104-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:101:9-104:59
+105            android:name="com.it_tech613.zhe.teevee.activity.EPGActivityUpdated"
+105-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:102:13-56
+106            android:screenOrientation="landscape"
+106-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:103:13-50
+107            android:theme="@style/AppTheme.NoActionBar" />
+107-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:104:13-56
+108        <activity
+108-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:105:9-108:59
+109            android:name="com.it_tech613.zhe.teevee.activity.VodInFoActivity"
+109-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:106:13-53
+110            android:screenOrientation="landscape"
+110-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:107:13-50
+111            android:theme="@style/AppTheme.NoActionBar" />
+111-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:108:13-56
+112        <activity
+112-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:109:9-112:59
+113            android:name="com.it_tech613.zhe.teevee.activity.TrailerActivity"
+113-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:110:13-53
+114            android:screenOrientation="landscape"
+114-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:111:13-50
+115            android:theme="@style/AppTheme.NoActionBar" />
+115-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:112:13-56
+116        <activity
+116-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:113:9-116:59
+117            android:name="com.it_tech613.zhe.teevee.activity.VpnActivity"
+117-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:114:13-49
+118            android:screenOrientation="landscape"
+118-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:115:13-50
+119            android:theme="@style/AppTheme.NoActionBar" />
+119-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:116:13-56
+120        <activity
+120-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:117:9-119:58
+121            android:name="com.it_tech613.zhe.teevee.activity.PreviewChannelIJKActivity"
+121-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:117:19-69
+122            android:screenOrientation="landscape"
+122-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:118:13-50
+123            android:theme="@style/AppTheme.NoActionBar" />
+123-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:119:13-56
+124        <activity
+124-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:120:9-122:58
+125            android:name="com.it_tech613.zhe.teevee.activity.PreviewChannelExoActivity"
+125-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:120:19-69
+126            android:screenOrientation="landscape"
+126-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:121:13-50
+127            android:theme="@style/AppTheme.NoActionBar" />
+127-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:122:13-56
+128        <activity
+128-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:123:9-125:58
+129            android:name="com.it_tech613.zhe.teevee.activity.VideoExoPlayActivity"
+129-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:123:19-64
+130            android:screenOrientation="landscape"
+130-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:124:13-50
+131            android:theme="@style/AppTheme.NoActionBar" />
+131-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:125:13-56
+132        <activity
+132-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:126:9-128:58
+133            android:name="com.it_tech613.zhe.teevee.activity.VideoIjkPlayActivity"
+133-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:126:19-64
+134            android:screenOrientation="landscape"
+134-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:127:13-50
+135            android:theme="@style/AppTheme.NoActionBar" />
+135-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:128:13-56
+136        <activity
+136-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:129:9-131:58
+137            android:name="com.it_tech613.zhe.teevee.activity.SeriesExoPlayActivity"
+137-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:129:19-65
+138            android:screenOrientation="landscape"
+138-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:130:13-50
+139            android:theme="@style/AppTheme.NoActionBar" />
+139-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:131:13-56
+140        <activity
+140-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:132:9-134:58
+141            android:name="com.it_tech613.zhe.teevee.activity.SeriesIjkPlayActivity"
+141-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:132:19-65
+142            android:screenOrientation="landscape"
+142-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:133:13-50
+143            android:theme="@style/AppTheme.NoActionBar" />
+143-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:134:13-56
+144
+145        <provider
+146            android:name="android.support.v4.content.FileProvider"
+146-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:136:13-67
+147            android:authorities="com.it_tech613.zhe.teevee.provider"
+147-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:137:13-60
+148            android:exported="false"
+148-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:138:13-37
+149            android:grantUriPermissions="true" >
+149-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:139:13-47
+150            <meta-data
+150-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:140:13-142:58
+151                android:name="android.support.FILE_PROVIDER_PATHS"
+151-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:141:17-67
+152                android:resource="@xml/provider_paths" />
+152-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:142:17-55
+153        </provider>
+154
+155        <service
+155-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:145:9-151:19
+156            android:name="com.it_tech613.zhe.teevee.vpn.fastconnect.core.OpenVpnService"
+156-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:146:13-64
+157            android:permission="android.permission.BIND_VPN_SERVICE" >
+157-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:147:13-69
+158            <intent-filter>
+158-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:148:13-150:29
+159                <action android:name="android.net.VpnService" />
+159-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:149:17-65
+159-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:149:25-62
+160            </intent-filter>
+161        </service>
+162
+163        <meta-data
+163-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:153:9-155:38
+164            android:name="android.support.VERSION"
+164-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:154:13-51
+165            android:value="26.1.0" />
+165-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:155:13-35
+166
+167        <service
+167-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:156:9-159:39
+168            android:name="com.it_tech613.zhe.teevee.MyForeGroundService"
+168-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:157:13-48
+169            android:enabled="true"
+169-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:158:13-35
+170            android:exported="true" />
+170-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:159:13-36
+171    </application>
+172
+173</manifest>
