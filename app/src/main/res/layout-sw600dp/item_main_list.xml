@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/num_color1"
-            android:textSize="20sp"/>
+            android:textSize="23sp"/>
     </LinearLayout>
     <View
         android:id="@+id/view"

@@ -68,7 +68,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
     List<CategoryModels> categories;
     TextView phone;
     CheckBox checkBox;
-    ImageView logo;
+    ImageView logo, im_loading;
     boolean is_remember = false;
     static {
         System.loadLibrary("notifications");
@@ -116,6 +116,8 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             checkBox.setChecked(true);
 
             progressBar.setVisibility(View.VISIBLE);
+            im_loading = findViewById(R.id.im_loading);
+            im_loading.setVisibility(View.VISIBLE);
             new Thread(this::callLogin).start();
         }
         name_txt.requestFocus();
@@ -154,6 +156,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 u_m = map.getJSONObject("user_info");
                 if (u_m.getString("username") == null) {
                     progressBar.setVisibility(View.GONE);
+                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
                 } else {
                     MyApp.created_at = u_m.getString("created_at");
@@ -196,6 +199,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 e.printStackTrace();
                 runOnUiThread(() ->{
                     progressBar.setVisibility(View.GONE);
+                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
                 } );
             }
@@ -203,6 +207,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             e0.printStackTrace();
             runOnUiThread(() -> {
                 progressBar.setVisibility(View.GONE);
+                im_loading.setVisibility(View.GONE);
                 ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
@@ -228,16 +233,16 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             long endTime = System.nanoTime();
             long MethodeDuration = (endTime - startTime);
 
-                Gson gson=new Gson();
-                map = map.replaceAll("[^\\x00-\\x7F]", "");
-                categories = new ArrayList<>();
-                categories.add(getRecentMovies());
-                categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
-                categories.add(new CategoryModels("favorite","Favorite","aa"));
+            Gson gson=new Gson();
+            map = map.replaceAll("[^\\x00-\\x7F]", "");
+            categories = new ArrayList<>();
+            categories.add(getRecentMovies());
+            categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
+            categories.add(new CategoryModels("favorite","Favorite","aa"));
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
-
+                e.printStackTrace();
             }
             MyApp.vod_categories = categories;
             callLiveCategory();
@@ -271,16 +276,17 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             long MethodeDuration = (endTime - startTime);
             //Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getLiveCategories success "+MethodeDuration);
-                Gson gson=new Gson();
-                map = map.replaceAll("[^\\x00-\\x7F]", "");
-                List<CategoryModels> categories;
-                categories = new ArrayList<>();
-                categories.add(new CategoryModels(Constants.recent_id,Constants.Recently_Viewed,""));
-                categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
-                categories.add(new CategoryModels(Constants.fav_id,Constants.Favorites,""));
+            Gson gson=new Gson();
+            map = map.replaceAll("[^\\x00-\\x7F]", "");
+            List<CategoryModels> categories;
+            categories = new ArrayList<>();
+            categories.add(new CategoryModels(Constants.recent_id,Constants.Recently_Viewed,""));
+            categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
+            categories.add(new CategoryModels(Constants.fav_id,Constants.Favorites,""));
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
+                e.printStackTrace();
             }
             MyApp.live_categories = categories;
             for(CategoryModels cagegory : categories){
@@ -321,15 +327,15 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             Log.e("BugCheck","getSeriesCategories success "+MethodeDuration);
             Gson gson=new Gson();
 
-                map = map.replaceAll("[^\\x00-\\x7F]", "");
-                List<CategoryModels> categories;
-                categories = new ArrayList<>();
-                categories.add(getRecentSeries());
-                categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
+            map = map.replaceAll("[^\\x00-\\x7F]", "");
+            List<CategoryModels> categories;
+            categories = new ArrayList<>();
+            categories.add(getRecentSeries());
+            categories.add(new CategoryModels(Constants.all_id,Constants.All,""));
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
-
+                e.printStackTrace();
             }
             MyApp.series_categories = categories;
             callLiveStreams();
@@ -364,7 +370,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             // Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getLiveStreams success "+MethodeDuration);
             try {
-                map = map.replaceAll("[^\\x00-\\x7F]", "");
+//                map = map.replaceAll("[^\\x00-\\x7F]", "");
                 JSONArray array = new JSONArray(map);
                 List maps = JsonHelper.toList(array);
                 List<ChannelModel> channelModels = new ArrayList<>();
@@ -442,16 +448,16 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                             chModels.add(chModel);
                         }
                     }
-                    if(chModels.size()<1){
-                        continue;
-                    }
+//                    if(chModels.size()<1){
+//                        continue;
+//                    }
                     datas.add(MyApp.live_categories.get(i).getName());
                     fullModels.add(new FullModel(MyApp.live_categories.get(i).getName(),chModels,category_name));
                 }
                 MyApp.fullModels = fullModels;
                 MyApp.maindatas = datas;
             }catch (Exception e){
-
+                e.printStackTrace();
             }
             getAuthorization();
         }catch (Exception e){
@@ -483,8 +489,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -497,10 +502,12 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             case R.id.login_btn:
                 if (name_txt.getText().toString().isEmpty()) {
                     progressBar.setVisibility(View.GONE);
+                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(this, "User name cannot be blank.", Toast.LENGTH_LONG).show();
                     return;
                 } else if (pass_txt.getText().toString().isEmpty()) {
                     progressBar.setVisibility(View.GONE);
+                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(this, "Password cannot be blank.", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -517,6 +524,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 break;
         }
     }
+
     private List<ChannelModel> getRecentChannels(List<ChannelModel> epgChannels){
         List<ChannelModel> recentChannels=new ArrayList<>();
         if(MyApp.instance.getPreference().get(Constants.getRecentChannels())!=null){
@@ -545,6 +553,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
         }
         return recentCategory;
     }
+
     private CategoryModels getRecentSeries() {
         CategoryModels recentCategory = new CategoryModels(Constants.recent_id,Constants.Recently_Viewed,"");
         List<SeriesModel> recentMovies=(List<SeriesModel>) MyApp.instance.getPreference().get(Constants.getRecentSeries());
@@ -558,6 +567,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
         }
         return recentCategory;
     }
+
     private void getAuthorization(){
         StringRequest request = new StringRequest(Constants.GetAutho1(this), new Response.Listener<String>() {
             @Override
