@@ -118,11 +118,15 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             progressBar.setVisibility(View.VISIBLE);
             im_loading = findViewById(R.id.im_loading);
             im_loading.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            //Find the currently focused view, so we can grab the correct window token from it.
+
+            imm.hideSoftInputFromWindow(im_loading.getWindowToken(), 0);
             new Thread(this::callLogin).start();
         }
         name_txt.requestFocus();
-//        name_txt.setText("antonello343");
-//        pass_txt.setText("34316878762");
+//        name_txt.setText("myapptest14");
+//        pass_txt.setText("uldHZeuNsP");
         TextView mac_txt = findViewById(R.id.login_mac_address);
         mac_txt.setText(MyApp.mac_address);
         TextView version_txt = (TextView) findViewById(R.id.app_version_code);

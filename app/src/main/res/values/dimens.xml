@@ -2,5 +2,5 @@
 <resources>
     <bool name="isTablet">false</bool>
     <dimen name="padding">5dp</dimen>
-    <dimen name="text_size_15sp">15sp</dimen>
+    <dimen name="text_size_15sp">17sp</dimen>
 </resources>
