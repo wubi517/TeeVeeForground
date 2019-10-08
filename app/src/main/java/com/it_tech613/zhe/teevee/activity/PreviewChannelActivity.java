@@ -20,7 +20,6 @@ import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,6 +29,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,12 +39,6 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.it_tech613.zhe.teevee.adapter.MainListAdapter;
 import com.it_tech613.zhe.teevee.apps.Constants;
 import com.it_tech613.zhe.teevee.apps.MyApp;
@@ -94,7 +89,7 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
     public static SurfaceView surfaceView;
     SurfaceView remote_subtitles_surface;
     private SurfaceHolder holder;
-    LinearLayout def_lay,ly_bottom,ly_resolution,ly_audio,ly_subtitle;
+    LinearLayout def_lay,ly_bottom,ly_resolution,ly_audio,ly_subtitle,ly_header;
 
     MediaPlayer.TrackDescription[] traks;
     MediaPlayer.TrackDescription[] subtraks;
@@ -199,6 +194,7 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
         Runnable runnable = new CountDownRunner();
         myThread = new Thread(runnable);
         myThread.start();
+        ly_header = findViewById(R.id.ly_header);
         def_lay = findViewById(R.id.def_lay);
         ly_surface = findViewById(R.id.ly_surface);
         ly_surface.setOnClickListener(this);
@@ -303,55 +299,27 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
                     String finalMsg = msg;
                     runOnUiThread(()->{
                         String rss_feed = "                 "+ finalMsg +"                 ";
-                        Paint paint = new Paint();
-                        paint.setTextSize(25);
-                        paint.setColor(Color.BLACK);
-                        paint.setStyle(Paint.Style.FILL);
-                        paint.setTypeface(Typeface.DEFAULT);
-                        Rect result = new Rect();
-                        paint.getTextBounds(rss_feed, 0, rss_feed.length(), result);
-                        txt_rss.setBackgroundResource(R.color.black);
-                        int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(this,result.width());
-                        if(divide<1){
-                            if(rss.equalsIgnoreCase(rss_feed)){
-                                image_icon.setVisibility(View.GONE);
-                                txt_rss.setVisibility(View.GONE);
-                                is_rss = false;
-                            }else {
-                                image_icon.setVisibility(View.VISIBLE);
-                                rss =rss_feed;
-                                is_rss = true;
-                                txt_rss.setVisibility(View.VISIBLE);
-                            }
-                            Log.e("rss1",rss);
-                            txt_rss.setSelected(true);
-                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                            txt_rss.setText(rss);
+                        if(rss.equalsIgnoreCase(rss_feed)){
+                            ly_header.setVisibility(View.GONE);
+//                            image_icon.setVisibility(View.GONE);
+//                            txt_rss.setVisibility(View.GONE);
+                            is_rss = false;
                         }else {
-                            for(int i =0;i<divide+1;i++){
-                                rss_feed += rss_feed;
-                            }
-                            if(rss.equalsIgnoreCase(rss_feed)){
-                                txt_rss.setVisibility(View.GONE);
-                                is_rss = false;
-                            }else {
-                                rss =rss_feed;
-                                is_rss = true;
-                                txt_rss.setVisibility(View.VISIBLE);
-                            }
-                            Log.e("rss2",rss);
-//                            txt_rss.setText(rss);
-//                            txt_rss.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.marquee1));
-                            txt_rss.setSelected(true);
-                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            rss =rss_feed;
+                            is_rss = true;
+                            ly_header.setVisibility(View.VISIBLE);
+                        }
+                        txt_rss.setBackgroundResource(R.color.black);
+                        if(is_msg){
+                            ly_header.setVisibility(View.VISIBLE);
                             txt_rss.setText(rss);
+                            Animation bottomToTop = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top);
+                            txt_rss.clearAnimation();
+                            txt_rss.startAnimation(bottomToTop);
+                        }else {
+                            ly_header.setVisibility(View.GONE);
                         }
                         rssTimer();
-                        if(is_msg){
-                            txt_rss.setVisibility(View.VISIBLE);
-                        }else {
-                            txt_rss.setVisibility(View.GONE);
-                        }
                     });
                 } else {
                     Toast.makeText(this, "Server Error!", Toast.LENGTH_SHORT).show();
@@ -371,7 +339,7 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
             if (rss_time < 1) {
                 txt_rss.setText("");
                 txt_rss.setBackgroundResource(R.color.trans_parent);
-                txt_rss.setVisibility(View.GONE);
+                ly_header.setVisibility(View.GONE);
                 logo.setVisibility(View.VISIBLE);
                 image_icon.setVisibility(View.GONE);
                 return;

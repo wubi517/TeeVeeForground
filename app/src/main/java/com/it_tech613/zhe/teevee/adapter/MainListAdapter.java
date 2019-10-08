@@ -94,7 +94,7 @@ public class MainListAdapter extends BaseAdapter {
         }else {
             image_clock.setVisibility(View.GONE);
         }
-        if (selected_pos == position && MyApp.is_first) {
+        if (selected_pos == position) {
             image_play.setVisibility(View.VISIBLE);
         } else {
             image_play.setVisibility(View.GONE);

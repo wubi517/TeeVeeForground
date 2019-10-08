@@ -2,35 +2,26 @@ package com.it_tech613.zhe.teevee.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.it_tech613.zhe.teevee.R;
 import com.it_tech613.zhe.teevee.apps.Constants;
 import com.it_tech613.zhe.teevee.apps.MyApp;
+import com.it_tech613.zhe.teevee.apps.PlayGifView;
 import com.it_tech613.zhe.teevee.dialog.ConnectionDlg;
-import com.it_tech613.zhe.teevee.dialog.VPNPinDlg;
 import com.it_tech613.zhe.teevee.models.CategoryModels;
 import com.it_tech613.zhe.teevee.models.ChannelModel;
 import com.it_tech613.zhe.teevee.models.FullModel;
@@ -38,42 +29,24 @@ import com.it_tech613.zhe.teevee.models.LoginModel;
 import com.it_tech613.zhe.teevee.models.MovieModel;
 import com.it_tech613.zhe.teevee.models.SeriesModel;
 import com.it_tech613.zhe.teevee.utils.JsonHelper;
-import com.it_tech613.zhe.teevee.utils.Utils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LoginAcitivity extends AppCompatActivity implements View.OnClickListener{
-    EditText name_txt, pass_txt;
-    ProgressBar progressBar;
-    String user, password,exp_date,xxxcategory_id;
+public class SplashActivity extends AppCompatActivity {
+    String user,password,exp_date,xxxcategory_id;
     List<CategoryModels> categories;
-    TextView phone;
-    CheckBox checkBox;
-    ImageView logo, im_loading;
-    boolean is_remember = false;
-    static {
-        System.loadLibrary("notifications");
-    }
+    LoginModel loginModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .penaltyLog()
                 .detectAll()
@@ -82,61 +55,29 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 .penaltyLog()
                 .detectAll()
                 .build());
-        setContentView(R.layout.activity_login_acitivity);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (MyApp.instance.getPreference().get(Constants.MAC_ADDRESS) == null) {
-            MyApp.mac_address = Utils.getPhoneMac(LoginAcitivity.this);
-            MyApp.instance.getPreference().put(Constants.MAC_ADDRESS, MyApp.mac_address.toUpperCase());
-        } else
-            MyApp.mac_address = (String) MyApp.instance.getPreference().get(Constants.MAC_ADDRESS);
 
-        RelativeLayout main_lay = findViewById(R.id.main_lay);
-        Bitmap myImage = getBitmapFromURL(Constants.GetLoginImage(LoginAcitivity.this));
-        Drawable dr = new BitmapDrawable(myImage);
-        main_lay.setBackgroundDrawable(dr);
-        progressBar = findViewById(R.id.login_progress);
-        name_txt = findViewById(R.id.login_name);
-        pass_txt =  findViewById(R.id.login_pass);
-        phone = findViewById(R.id.phone);
-        checkBox = findViewById(R.id.checkbox);
-        checkBox.setOnClickListener(this);
-        if(phone.getVisibility()==View.GONE){
-            MyApp.instance.getPreference().put(Constants.IS_PHONE,"is_phone");
-        }
+        PlayGifView playGifView = findViewById(R.id.splash_gif);
+        playGifView.setImageResource(R.raw.start);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) playGifView.getLayoutParams();
+        params.width =  metrics.widthPixels;
+        params.height = metrics.heightPixels;
+        params.leftMargin = 0;
+        playGifView.setLayoutParams(params);
+        loginModel = (LoginModel) MyApp.instance.getPreference().get(Constants.LOGIN_INFO);
+        user = loginModel.getUser_name().replaceAll("\\s","");
+        password = loginModel.getPassword().replaceAll("\\s","");
 
-        if(MyApp.instance.getPreference().get(Constants.LOGIN_INFO)!=null){
-            LoginModel loginModel = (LoginModel) MyApp.instance.getPreference().get(Constants.LOGIN_INFO);
-            user = loginModel.getUser_name();
-            password = loginModel.getPassword();
-            name_txt.setText(user);
-            pass_txt.setText(password);
-            checkBox.setChecked(true);
-            progressBar.setVisibility(View.VISIBLE);
-            new Thread(this::callLogin).start();
-        }
-        name_txt.requestFocus();
-//        name_txt.setText("GYD167439");
-//        pass_txt.setText("nLLJmIjOCd");
-        TextView mac_txt = findViewById(R.id.login_mac_address);
-        mac_txt.setText(MyApp.mac_address);
-        TextView version_txt = (TextView) findViewById(R.id.app_version_code);
-        MyApp.version_str = "v " + MyApp.version_name;
-        version_txt.setText(MyApp.version_str);
-        findViewById(R.id.login_btn).setOnClickListener(this);
-        logo = (ImageView)findViewById(R.id.logo);
-        Picasso.with(LoginAcitivity.this).load(Constants.GetIcon(LoginAcitivity.this))
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .error(R.drawable.icon)
-                .into(logo);
-        logo.setOnClickListener(this);
-        FullScreencall();
+        new Thread(this::callLogin).start();
+//        FullScreencall();
+
     }
 
     private void callLogin() {
         try {
-            runOnUiThread(()->progressBar.setVisibility(View.VISIBLE));
             long startTime = System.nanoTime();
             String responseBody = MyApp.instance.getIptvclient().authenticate(user,password);
             long endTime = System.nanoTime();
@@ -150,14 +91,12 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 JSONObject u_m;
                 u_m = map.getJSONObject("user_info");
                 if (u_m.getString("username") == null) {
-                    progressBar.setVisibility(View.GONE);
-                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
                 } else {
                     MyApp.created_at = u_m.getString("created_at");
                     MyApp.status = u_m.getString("status");
                     if(!MyApp.status.equalsIgnoreCase("Active")){
-                        Intent intent =new Intent(LoginAcitivity.this,EmptyActivity.class);
+                        Intent intent =new Intent(this,EmptyActivity.class);
                         intent.putExtra("msg","Your account is Expired");
                         startActivity(intent);
                         return;
@@ -180,12 +119,10 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                         loginModel.setExp_date("unlimited");
                     }
                     MyApp.loginModel = loginModel;
-                    Log.e("remember",String.valueOf(is_remember));
-                    if(checkBox.isChecked()){
-                        MyApp.instance.getPreference().put(Constants.LOGIN_INFO, loginModel);
-                    }
+                    MyApp.instance.getPreference().put(Constants.LOGIN_INFO, loginModel);
+
                     JSONObject serverInfo= map.getJSONObject("server_info");
-                    String  my_timestamp= serverInfo.getString("timestamp_now");
+                    String my_timestamp= serverInfo.getString("timestamp_now");
                     String server_timestamp= serverInfo.getString("time_now");
                     Constants.setServerTimeOffset(my_timestamp,server_timestamp);
                     callVodCategory();
@@ -193,17 +130,13 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             } catch (JSONException e) {
                 e.printStackTrace();
                 runOnUiThread(() ->{
-                    progressBar.setVisibility(View.GONE);
-                    im_loading.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
                 } );
             }
         } catch (Exception e0) {
             e0.printStackTrace();
             runOnUiThread(() -> {
-                progressBar.setVisibility(View.GONE);
-                im_loading.setVisibility(View.GONE);
-                ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
@@ -212,7 +145,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(LoginAcitivity.this, ConnectionErrorActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
                     }
                 });
                 connectionDlg.show();
@@ -237,14 +170,14 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
-                e.printStackTrace();
+
             }
             MyApp.vod_categories = categories;
             callLiveCategory();
         }catch (Exception e){
             e.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(SplashActivity.this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
@@ -253,7 +186,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(LoginAcitivity.this, ConnectionErrorActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
                     }
                 });
                 connectionDlg.show();
@@ -269,7 +202,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             long endTime = System.nanoTime();
 
             long MethodeDuration = (endTime - startTime);
-            //Log.e(getClass().getSimpleName(),map);
+            Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getLiveCategories success "+MethodeDuration);
             Gson gson=new Gson();
             map = map.replaceAll("[^\\x00-\\x7F]", "");
@@ -281,19 +214,13 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
-                e.printStackTrace();
             }
             MyApp.live_categories = categories;
-            for(CategoryModels cagegory : categories){
-                if(cagegory.getName().toLowerCase().contains("xxx") || cagegory.getName().toLowerCase().contains("adult")){
-                    xxxcategory_id = cagegory.getId();
-                }
-            }
             callSeriesCategory();
         }catch (Exception e){
             e.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(SplashActivity.this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
@@ -302,7 +229,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(LoginAcitivity.this, ConnectionErrorActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
                     }
                 });
                 connectionDlg.show();
@@ -318,7 +245,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             long endTime = System.nanoTime();
 
             long MethodeDuration = (endTime - startTime);
-            //Log.e(getClass().getSimpleName(),map);
+            Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getSeriesCategories success "+MethodeDuration);
             Gson gson=new Gson();
 
@@ -330,14 +257,14 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             try {
                 categories.addAll(gson.fromJson(map, new TypeToken<List<CategoryModels>>(){}.getType()));
             }catch (Exception e){
-                e.printStackTrace();
+
             }
             MyApp.series_categories = categories;
             callLiveStreams();
         }catch (Exception e){
             e.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(SplashActivity.this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
@@ -346,7 +273,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(LoginAcitivity.this, ConnectionErrorActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
                     }
                 });
                 connectionDlg.show();
@@ -362,10 +289,10 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             long endTime = System.nanoTime();
 
             long MethodeDuration = (endTime - startTime);
-            // Log.e(getClass().getSimpleName(),map);
+            Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getLiveStreams success "+MethodeDuration);
             try {
-//                map = map.replaceAll("[^\\x00-\\x7F]", "");
+                map = map.replaceAll("[^\\x00-\\x7F]", "");
                 JSONArray array = new JSONArray(map);
                 List maps = JsonHelper.toList(array);
                 List<ChannelModel> channelModels = new ArrayList<>();
@@ -392,7 +319,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                             chModel.setCategory_id(ch_m.get("category_id").toString());
                             chModel.setEpg_channel_id(epg_id);
                             chModel.setStream_icon(img_url);
-                            chModel.setTv_archive(String .valueOf(ch_m.get("tv_archive")));
+                            chModel.setTv_archive(String.valueOf(ch_m.get("tv_archive")));
                             if(ch_m.get("category_id").toString().equalsIgnoreCase(xxxcategory_id)){
                                 chModel.setIs_locked(true);
                             }else {
@@ -400,7 +327,7 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                             }
                             channelModels.add(chModel);
                         }catch (Exception e){
-                            Log.e("error","parse_error"+String .valueOf(i));
+                            Log.e("error","parse_error"+ i);
                         }
                     }
                 }
@@ -411,11 +338,11 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 MyApp.backup_map = back_map;
                 List<FullModel> fullModels = new ArrayList<>();
                 fullModels.add(new FullModel(Constants.recent_id, getRecentChannels(channelModels), Constants.Recently_Viewed));
-                fullModels.add(new FullModel("All Channel", channelModels,"All Channel"));
+                fullModels.add(new FullModel(Constants.all_id, channelModels,"All Channel"));
                 if(MyApp.instance.getPreference().get(Constants.FAV_INFO)==null){
-                    fullModels.add(new FullModel("My Favorites", new ArrayList<ChannelModel>(),"My Favorites"));
+                    fullModels.add(new FullModel(Constants.fav_id, new ArrayList<ChannelModel>(),"My Favorites"));
                 }else {
-                    fullModels.add(new FullModel("My Favorites", (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO),"My Favorites"));
+                    fullModels.add(new FullModel(Constants.fav_id, (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO),"My Favorites"));
                     for(int i = 0;i<fullModels.get(0).getChannels().size();i++){
                         List<ChannelModel> fav = (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO);
                         for(int j=0;j< fav.size();j++){
@@ -452,13 +379,13 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
                 MyApp.fullModels = fullModels;
                 MyApp.maindatas = datas;
             }catch (Exception e){
-                e.printStackTrace();
+                Log.e("catch","catch");
             }
             getAuthorization();
         }catch (Exception e){
             e.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(LoginAcitivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(SplashActivity.this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
@@ -467,59 +394,13 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(LoginAcitivity.this, ConnectionErrorActivity.class));
+                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
                     }
                 });
                 connectionDlg.show();
             });
         }
     }
-
-
-
-    public Bitmap getBitmapFromURL(String imageUrl) {
-        try {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.login_btn:
-                if (name_txt.getText().toString().isEmpty()) {
-                    progressBar.setVisibility(View.GONE);
-                    im_loading.setVisibility(View.GONE);
-                    Toast.makeText(this, "User name cannot be blank.", Toast.LENGTH_LONG).show();
-                    return;
-                } else if (pass_txt.getText().toString().isEmpty()) {
-                    progressBar.setVisibility(View.GONE);
-                    im_loading.setVisibility(View.GONE);
-                    Toast.makeText(this, "Password cannot be blank.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                user = name_txt.getText().toString();
-                password = pass_txt.getText().toString();
-                progressBar.setVisibility(View.VISIBLE);
-                new Thread(this::callLogin).start();
-                break;
-            case R.id.checkbox:
-                is_remember = checkBox.isChecked();
-                break;
-            case R.id.logo:
-                showVpnPinDlg();
-                break;
-        }
-    }
-
     private List<ChannelModel> getRecentChannels(List<ChannelModel> epgChannels){
         List<ChannelModel> recentChannels=new ArrayList<>();
         if(MyApp.instance.getPreference().get(Constants.getRecentChannels())!=null){
@@ -533,6 +414,25 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             }
         }
         return recentChannels;
+    }
+    private void getAuthorization(){
+        StringRequest request = new StringRequest(Constants.GetAutho1(this), string -> {
+            try {
+                JSONObject object = new JSONObject(string);
+                if (((String) object.get("status")).equalsIgnoreCase("success")) {
+                    startActivity(new Intent(SplashActivity.this,WelcomeActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(SplashActivity.this, "Server Error!", Toast.LENGTH_SHORT).show();
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
+        }, volleyError -> Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show());
+
+        RequestQueue rQueue = Volley.newRequestQueue(SplashActivity.this);
+        rQueue.add(request);
     }
 
     private CategoryModels getRecentMovies() {
@@ -548,7 +448,6 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
         }
         return recentCategory;
     }
-
     private CategoryModels getRecentSeries() {
         CategoryModels recentCategory = new CategoryModels(Constants.recent_id,Constants.Recently_Viewed,"");
         List<SeriesModel> recentMovies=(List<SeriesModel>) MyApp.instance.getPreference().get(Constants.getRecentSeries());
@@ -562,72 +461,10 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
         }
         return recentCategory;
     }
-
-    private void getAuthorization(){
-        StringRequest request = new StringRequest(Constants.GetAutho1(this), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                try {
-                    JSONObject object = new JSONObject(string);
-                    if (((String) object.get("status")).equalsIgnoreCase("success")) {
-                        startActivity(new Intent(LoginAcitivity.this,WelcomeActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(LoginAcitivity.this, "Server Error!", Toast.LENGTH_SHORT).show();
-                    }
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
-
-            }
-        }, volleyError -> Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show());
-
-        RequestQueue rQueue = Volley.newRequestQueue(LoginAcitivity.this);
-        rQueue.add(request);
-    }
-
     public void FullScreencall() {
-        if(Build.VERSION.SDK_INT < 19) { // lower api
-            View v = this.getWindow().getDecorView();
-            v.setSystemUiVisibility(View.GONE);
-        } else  {
-            //for new api versions.
-            View decorView = getWindow().getDecorView();
-            int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            decorView.setSystemUiVisibility(uiOptions);
-        }
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        View view = getCurrentFocus();
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-//            Toast.makeText(this,""+event.getKeyCode(),Toast.LENGTH_SHORT).show();
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_MENU:
-                    showVpnPinDlg();
-                    break;
-            }
-        }
-        return super.dispatchKeyEvent(event);
-    }
-    private void showVpnPinDlg() {
-        VPNPinDlg pinDlg = new VPNPinDlg(LoginAcitivity.this, new VPNPinDlg.DlgPinListener() {
-            @Override
-            public void OnYesClick(Dialog dialog, String pin_code) {
-                String pin = (String )MyApp.instance.getPreference().get(Constants.DIRECT_VPN_PIN_CODE);
-                if(pin_code.equalsIgnoreCase(pin)){
-                    dialog.dismiss();
-                    startActivity(new Intent(LoginAcitivity.this,VpnActivity.class));
-                }else {
-                    Toast.makeText(LoginAcitivity.this, "Your Pin code was incorrect. Please try again", Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void OnCancelClick(Dialog dialog, String pin_code) {
-                dialog.dismiss();
-            }
-        });
-        pinDlg.show();
+        //for new api versions.
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 }

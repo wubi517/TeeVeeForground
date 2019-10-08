@@ -25,6 +25,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.it_tech613.zhe.teevee.activity.LoginAcitivity;
+import com.it_tech613.zhe.teevee.activity.SplashActivity;
 import com.it_tech613.zhe.teevee.apps.Constants;
 import com.it_tech613.zhe.teevee.apps.MyApp;
 import com.it_tech613.zhe.teevee.dialog.UpdateDlg;
@@ -217,15 +218,20 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void OnUpdateSkipClick(Dialog dialog) {
                     dialog.dismiss();
-                    startActivity(new Intent(MainActivity.this, LoginAcitivity.class));
-                    finish();
+                    getStart();
                 }
             });
             updateDlg.show();
         }else {
-            startActivity(new Intent(MainActivity.this, LoginAcitivity.class));
-            finish();
+            getStart();
         }
+    }
+
+    private void getStart(){
+        if (MyApp.instance.getPreference().get(Constants.LOGIN_INFO)!=null)
+            startActivity(new Intent(MainActivity.this, SplashActivity.class));
+        else startActivity(new Intent(MainActivity.this, LoginAcitivity.class));
+        finish();
     }
     class versionUpdate extends AsyncTask<String, Integer, String> {
         ProgressDialog mProgressDialog;
@@ -303,8 +309,7 @@ public class MainActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
             if (result != null) {
                 Toast.makeText(getApplicationContext(),"Update Failed",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(MainActivity.this, LoginAcitivity.class));
-                finish();
+                getStart();
             } else
                 startInstall(file);
         }

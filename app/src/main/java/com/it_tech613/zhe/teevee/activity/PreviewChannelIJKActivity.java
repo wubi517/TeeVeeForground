@@ -22,6 +22,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,10 +80,8 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
     private AndroidMediaController mMediaController;
     private TextView txt_num;
     private TableLayout mHudView;
-    LinearLayout def_lay,ly_bottom,ly_resolution,ly_audio,ly_subtitle;
-
+    LinearLayout def_lay,ly_bottom,ly_resolution,ly_audio,ly_subtitle,ly_header;
     boolean first = true;
-
     ImageView btn_back,btn_guide,image_clock,image_star,channel_logo,logo,image_icon;
     RelativeLayout ly_surface,main_lay;
     List<FullModel> full_datas;
@@ -180,6 +180,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
         myThread = new Thread(runnable);
         myThread.start();
         def_lay = findViewById(R.id.def_lay);
+        ly_header = findViewById(R.id.ly_header);
         ly_surface = findViewById(R.id.ly_surface);
         ly_surface.setOnClickListener(this);
 
@@ -278,56 +279,27 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                     if (msg.equals("")) msg=getString(R.string.app_name);
                     String finalMsg = msg;
                     runOnUiThread(()->{
-                        String rss_feed = "                 "+ finalMsg +"                 ";
-                        Paint paint = new Paint();
-                        paint.setTextSize(25);
-                        paint.setColor(Color.BLACK);
-                        paint.setStyle(Paint.Style.FILL);
-                        paint.setTypeface(Typeface.DEFAULT);
-                        Rect result = new Rect();
-                        paint.getTextBounds(rss_feed, 0, rss_feed.length(), result);
                         txt_rss.setBackgroundResource(R.color.black);
-                        int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(this,result.width());
-                        if(divide<1){
-                            if(rss.equalsIgnoreCase(rss_feed)){
-                                image_icon.setVisibility(View.GONE);
-                                txt_rss.setVisibility(View.GONE);
-                                is_rss = false;
-                            }else {
-                                image_icon.setVisibility(View.VISIBLE);
-                                rss =rss_feed;
-                                is_rss = true;
-                                txt_rss.setVisibility(View.VISIBLE);
-                            }
-                            Log.e("rss1",rss);
-                            txt_rss.setSelected(true);
-                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                            txt_rss.setText(rss);
+                        String rss_feed = "                 "+ finalMsg +"                 ";
+                        if(rss.equalsIgnoreCase(rss_feed)){
+                            ly_header.setVisibility(View.GONE);
+                            is_rss = false;
                         }else {
-                            for(int i =0;i<divide+1;i++){
-                                rss_feed += rss_feed;
-                            }
-                            if(rss.equalsIgnoreCase(rss_feed)){
-                                txt_rss.setVisibility(View.GONE);
-                                is_rss = false;
-                            }else {
-                                rss =rss_feed;
-                                is_rss = true;
-                                txt_rss.setVisibility(View.VISIBLE);
-                            }
-                            Log.e("rss2",rss);
-//                            txt_rss.setText(rss);
-//                            txt_rss.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.marquee1));
-                            txt_rss.setSelected(true);
-                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            rss =rss_feed;
+                            is_rss = true;
+                            ly_header.setVisibility(View.VISIBLE);
+                        }
+                        txt_rss.setBackgroundResource(R.color.black);
+                        if(is_msg){
+                            ly_header.setVisibility(View.VISIBLE);
                             txt_rss.setText(rss);
+                            Animation bottomToTop = AnimationUtils.loadAnimation(this, R.anim.bottom_to_top);
+                            txt_rss.clearAnimation();
+                            txt_rss.startAnimation(bottomToTop);
+                        }else {
+                            ly_header.setVisibility(View.GONE);
                         }
                         rssTimer();
-                        if(is_msg){
-                            txt_rss.setVisibility(View.VISIBLE);
-                        }else {
-                            txt_rss.setVisibility(View.GONE);
-                        }
                     });
                 } else {
                     Toast.makeText(this, "Server Error!", Toast.LENGTH_SHORT).show();
@@ -347,7 +319,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
             if (rss_time < 1) {
                 txt_rss.setText("");
                 txt_rss.setBackgroundResource(R.color.trans_parent);
-                txt_rss.setVisibility(View.GONE);
+                ly_header.setVisibility(View.GONE);
                 logo.setVisibility(View.VISIBLE);
                 image_icon.setVisibility(View.GONE);
                 return;

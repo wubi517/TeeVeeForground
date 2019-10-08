@@ -87,7 +87,7 @@
             android:layout_gravity="bottom"
             android:background="@drawable/icon_back"
             android:paddingBottom="15sp"
-            android:paddingTop="30sp"
+            android:paddingTop="45sp"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_weight="1">

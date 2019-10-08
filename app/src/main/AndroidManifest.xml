@@ -31,6 +31,9 @@
         android:hardwareAccelerated="false"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
+        <activity android:name=".activity.SplashActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.MultiScreenActivity"
             android:screenOrientation="landscape"
