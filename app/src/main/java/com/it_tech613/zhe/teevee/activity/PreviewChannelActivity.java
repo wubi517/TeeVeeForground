@@ -279,92 +279,90 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
         mStream_id = channels.get(sub_pos).getStream_id();
         new Thread(this::getEpg).start();
         playChannel();
-        getRespond();
+        new Thread(this::getRespond).start();
     }
 
     private void getRespond(){
-        StringRequest request = new StringRequest(Constants.GetUrl(this)+"="+Constants.GetKey(this), string -> {
+        String url = "";
+        url=Constants.GetKey(this);
+        try{
+            String response = MyApp.instance.getIptvclient().login(url);
+            Log.e("response",response);
             try {
-                JSONObject object = new JSONObject(string);
-                if (((String) object.get("status")).equalsIgnoreCase("success")) {
-                    String msg_on_off = (String) object.get("message_on_off");
-                    if(msg_on_off.equalsIgnoreCase("0")){
-                        is_msg = false;
-                    }else {
-                        is_msg = true;
-                    }
+                JSONObject object = new JSONObject(response);
+                if (object.getBoolean("status")) {
+                    JSONObject data_obj = object.getJSONObject("data");
+                    String msg=data_obj.getString("message");
                     try {
-                        msg_time = Integer.parseInt((String)object.get("message_time"));
+                        msg_time = Integer.parseInt(data_obj.getString("message_time"));
                     }catch (Exception e){
                         msg_time = 20;
                     }
-                    String rss_feed = "                 "+object.get("msg")+"                 ";
-                    Paint paint = new Paint();
-                    paint.setTextSize(25);
-                    paint.setColor(Color.BLACK);
-                    paint.setStyle(Paint.Style.FILL);
-                    paint.setTypeface(Typeface.DEFAULT);
-                    Rect result = new Rect();
-                    paint.getTextBounds(rss_feed, 0, rss_feed.length(), result);
-                    txt_rss.setBackgroundResource(R.color.black);
-                    int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(PreviewChannelActivity.this,result.width());
-                    if(divide<1){
-                        if(rss.equalsIgnoreCase(rss_feed) || !is_msg){
-                            logo.setVisibility(View.VISIBLE);
-                            image_icon.setVisibility(View.GONE);
-                            txt_rss.setVisibility(View.GONE);
-                            is_rss = false;
+                    is_msg = !data_obj.getString("message_on_off").isEmpty() && data_obj.getString("message_on_off").equalsIgnoreCase("1");
+                    if (msg.equals("")) msg=getString(R.string.app_name);
+                    String finalMsg = msg;
+                    runOnUiThread(()->{
+                        String rss_feed = "                 "+ finalMsg +"                 ";
+                        Paint paint = new Paint();
+                        paint.setTextSize(25);
+                        paint.setColor(Color.BLACK);
+                        paint.setStyle(Paint.Style.FILL);
+                        paint.setTypeface(Typeface.DEFAULT);
+                        Rect result = new Rect();
+                        paint.getTextBounds(rss_feed, 0, rss_feed.length(), result);
+                        txt_rss.setBackgroundResource(R.color.black);
+                        int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(this,result.width());
+                        if(divide<1){
+                            if(rss.equalsIgnoreCase(rss_feed)){
+                                image_icon.setVisibility(View.GONE);
+                                txt_rss.setVisibility(View.GONE);
+                                is_rss = false;
+                            }else {
+                                image_icon.setVisibility(View.VISIBLE);
+                                rss =rss_feed;
+                                is_rss = true;
+                                txt_rss.setVisibility(View.VISIBLE);
+                            }
+                            Log.e("rss1",rss);
+                            txt_rss.setSelected(true);
+                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            txt_rss.setText(rss);
                         }else {
-                            logo.setVisibility(View.GONE);
-                            image_icon.setVisibility(View.VISIBLE);
-                            rss =rss_feed;
-                            is_rss = true;
-                            txt_rss.setVisibility(View.VISIBLE);
-                        }
-                        Log.e("rss1",rss);
-                        txt_rss.setSelected(true);
-                        txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                        txt_rss.setText(rss);
-                    }else {
-                        for(int i =0;i<divide+1;i++){
-                            rss_feed += rss_feed;
-                        }
-                        if(rss.equalsIgnoreCase(rss_feed) || !is_msg){
-                            logo.setVisibility(View.VISIBLE);
-                            image_icon.setVisibility(View.GONE);
-                            txt_rss.setVisibility(View.GONE);
-                            is_rss = false;
-                        }else {
-                            rss =rss_feed;
-                            is_rss = true;
-                            logo.setVisibility(View.GONE);
-                            image_icon.setVisibility(View.VISIBLE);
-                            txt_rss.setVisibility(View.VISIBLE);
-                        }
-                        Log.e("rss2",rss);
+                            for(int i =0;i<divide+1;i++){
+                                rss_feed += rss_feed;
+                            }
+                            if(rss.equalsIgnoreCase(rss_feed)){
+                                txt_rss.setVisibility(View.GONE);
+                                is_rss = false;
+                            }else {
+                                rss =rss_feed;
+                                is_rss = true;
+                                txt_rss.setVisibility(View.VISIBLE);
+                            }
+                            Log.e("rss2",rss);
 //                            txt_rss.setText(rss);
 //                            txt_rss.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.marquee1));
-                        txt_rss.setSelected(true);
-                        txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                        txt_rss.setText(rss);
-                    }
-                    rssTimer();
+                            txt_rss.setSelected(true);
+                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            txt_rss.setText(rss);
+                        }
+                        rssTimer();
+                        if(is_msg){
+                            txt_rss.setVisibility(View.VISIBLE);
+                        }else {
+                            txt_rss.setVisibility(View.GONE);
+                        }
+                    });
                 } else {
-                    Toast.makeText(PreviewChannelActivity.this, "Server Error!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Server Error!", Toast.LENGTH_SHORT).show();
                 }
             }catch (JSONException e){
                 e.printStackTrace();
             }
+        }catch (Exception e){
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }
 
-        RequestQueue rQueue = Volley.newRequestQueue(PreviewChannelActivity.this);
-        rQueue.add(request);
     }
     int rss_time;
     private void rssTimer() {

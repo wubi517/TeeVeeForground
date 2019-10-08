@@ -8,8 +8,8 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.it_tech613.zhe.teevee";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "";
-  public static final int VERSION_CODE = 5;
-  public static final String VERSION_NAME = "1.4";
+  public static final int VERSION_CODE = 6;
+  public static final String VERSION_NAME = "1.5";
   // Fields from build type: debug
-  public static final java.util.Date BUILD_TIME = new java.util.Date(1570470611111L);
+  public static final java.util.Date BUILD_TIME = new java.util.Date(1570535489278L);
 }

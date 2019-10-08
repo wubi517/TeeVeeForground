@@ -192,88 +192,90 @@ public class VideoPlayActivity extends AppCompatActivity implements  SeekBar.OnS
 
         playVideo(cont_url);
         FullScreencall();
-        getRespond();
+        new Thread(this::getRespond).start();
     }
 
     private void getRespond(){
-        StringRequest request = new StringRequest(Constants.GetUrl(this)+"="+Constants.GetKey(this), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String string) {
-                try {
-                    JSONObject object = new JSONObject(string);
-                    if (((String) object.get("status")).equalsIgnoreCase("success")) {
-                        String msg_on_off = (String) object.get("message_on_off");
-                        is_msg = !msg_on_off.equalsIgnoreCase("0");
-                        try {
-                            msg_time = Integer.parseInt((String)object.get("message_time"));
-                        }catch (Exception e){
-                            msg_time = 20;
-                        }
-                        String rss_feed = "                 "+object.get("msg")+"                 ";
-                        if(rss.equalsIgnoreCase(rss_feed)){
-                            txt_rss.setVisibility(View.GONE);
-                            is_rss = false;
-                        }else {
-                            rss =rss_feed;
-                            is_rss = true;
-                            txt_rss.setVisibility(View.VISIBLE);
-                        }
+        String url = "";
+        url=Constants.GetKey(this);
+        try{
+            String response = MyApp.instance.getIptvclient().login(url);
+            Log.e("response",response);
+            try {
+                JSONObject object = new JSONObject(response);
+                if (object.getBoolean("status")) {
+                    JSONObject data_obj = object.getJSONObject("data");
+                    String msg=data_obj.getString("message");
+                    try {
+                        msg_time = Integer.parseInt(data_obj.getString("message_time"));
+                    }catch (Exception e){
+                        msg_time = 20;
+                    }
+                    is_msg = !data_obj.getString("message_on_off").isEmpty() && data_obj.getString("message_on_off").equalsIgnoreCase("1");
+                    if (msg.equals("")) msg=getString(R.string.app_name);
+                    String finalMsg = msg;
+                    runOnUiThread(()->{
+                        String rss_feed = "                 "+ finalMsg +"                 ";
                         Paint paint = new Paint();
                         paint.setTextSize(25);
                         paint.setColor(Color.BLACK);
                         paint.setStyle(Paint.Style.FILL);
                         paint.setTypeface(Typeface.DEFAULT);
                         Rect result = new Rect();
-                        paint.getTextBounds(rss, 0, rss.length(), result);
+                        paint.getTextBounds(rss_feed, 0, rss_feed.length(), result);
                         txt_rss.setBackgroundResource(R.color.black);
-                        int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(VideoPlayActivity.this,result.width());
+                        int divide = (MyApp.SCREEN_WIDTH)/Utils.dp2px(this,result.width());
                         if(divide<1){
-                            Log.e("rss1",rss);
-                            if(is_msg){
-                                image_icon.setVisibility(View.VISIBLE);
-                                txt_rss.setSelected(true);
-                                txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                                txt_rss.setText(rss);
-                            }else {
-                                txt_rss.setVisibility(View.GONE);
+                            if(rss.equalsIgnoreCase(rss_feed)){
                                 image_icon.setVisibility(View.GONE);
+                                txt_rss.setVisibility(View.GONE);
+                                is_rss = false;
+                            }else {
+                                image_icon.setVisibility(View.VISIBLE);
+                                rss =rss_feed;
+                                is_rss = true;
+                                txt_rss.setVisibility(View.VISIBLE);
                             }
+                            Log.e("rss1",rss);
+                            txt_rss.setSelected(true);
+                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            txt_rss.setText(rss);
                         }else {
                             for(int i =0;i<divide+1;i++){
-                                rss +=rss;
+                                rss_feed += rss_feed;
+                            }
+                            if(rss.equalsIgnoreCase(rss_feed)){
+                                txt_rss.setVisibility(View.GONE);
+                                is_rss = false;
+                            }else {
+                                rss =rss_feed;
+                                is_rss = true;
+                                txt_rss.setVisibility(View.VISIBLE);
                             }
                             Log.e("rss2",rss);
-                            if(is_msg){
-                                image_icon.setVisibility(View.VISIBLE);
-                                txt_rss.setSelected(true);
-                                txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-                                txt_rss.setText(rss);
-                            }else {
-                                txt_rss.setVisibility(View.GONE);
-                                image_icon.setVisibility(View.GONE);
-                            }
-
 //                            txt_rss.setText(rss);
 //                            txt_rss.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.marquee1));
+                            txt_rss.setSelected(true);
+                            txt_rss.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                            txt_rss.setText(rss);
                         }
                         rssTimer();
-                    } else {
-                        Toast.makeText(VideoPlayActivity.this, "Server Error!", Toast.LENGTH_SHORT).show();
-                    }
-                }catch (JSONException e){
-                    e.printStackTrace();
+                        if(is_msg){
+                            txt_rss.setVisibility(View.VISIBLE);
+                        }else {
+                            txt_rss.setVisibility(View.GONE);
+                        }
+                    });
+                } else {
+                    Toast.makeText(this, "Server Error!", Toast.LENGTH_SHORT).show();
                 }
-
+            }catch (JSONException e){
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), "Some error occurred!!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }catch (Exception e){
 
-        RequestQueue rQueue = Volley.newRequestQueue(VideoPlayActivity.this);
-        rQueue.add(request);
+        }
+
     }
     int rss_time;
     private void rssTimer() {
