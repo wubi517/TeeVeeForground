@@ -58,18 +58,18 @@ public class MyApp extends MultiDexApplication {
     public static MyApp instance;
     private MyPreference preference;
     public static LoginModel loginModel;
-    public static List<FullModel> fullModels;
+    public static List<FullModel> fullModels = new ArrayList<>();
     public static List<CategoryModels> vod_categories=new ArrayList<>();
     public static List<CategoryModels> live_categories=new ArrayList<>();
     public static List<CategoryModels> series_categories=new ArrayList<>();
-    public static List<FullModel> fullModels_filter;
+    public static List<FullModel> fullModels_filter = new ArrayList<>();
     public static List<CategoryModels> vod_categories_filter = new ArrayList<>();
     public static List<CategoryModels> live_categories_filter = new ArrayList<>();
     public static List<CategoryModels> series_categories_filter = new ArrayList<>();
     public static List<MovieModel> movieModels;
     public static List<MovieModel>movieModels0;
     public static List<MovieModel> recentMovieModels = new ArrayList<>();
-    public static List<SeriesModel>seriesModels;
+    public static List<SeriesModel>seriesModels = new ArrayList<>();
     public static List<SeriesModel> recentSeriesModels = new ArrayList<>();
     public static  MovieModel vod_model;
 
@@ -204,8 +204,8 @@ public class MyApp extends MultiDexApplication {
             SCREEN_WIDTH = SCREEN_HEIGHT;
             SCREEN_HEIGHT = a;
         }
-        SURFACE_WIDTH = (int)(SCREEN_WIDTH/3);
-        SURFACE_HEIGHT = (int)(SURFACE_WIDTH*0.65);
+        SURFACE_WIDTH = (int)(SCREEN_WIDTH/2.65);
+        SURFACE_HEIGHT = (int)(SURFACE_WIDTH*0.6);
         top_margin = SCREEN_HEIGHT/7;
         right_margin = SCREEN_WIDTH/14;
         ITEM_V_WIDTH = (int) (SCREEN_WIDTH /8);

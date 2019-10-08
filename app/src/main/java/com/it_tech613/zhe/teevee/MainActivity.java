@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getRespond();
         }
-        FullScreencall();
+//        FullScreencall();
     }
 
     public void FullScreencall() {

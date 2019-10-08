@@ -289,10 +289,10 @@ public class SplashActivity extends AppCompatActivity {
             long endTime = System.nanoTime();
 
             long MethodeDuration = (endTime - startTime);
-            Log.e(getClass().getSimpleName(),map);
+            // Log.e(getClass().getSimpleName(),map);
             Log.e("BugCheck","getLiveStreams success "+MethodeDuration);
             try {
-                map = map.replaceAll("[^\\x00-\\x7F]", "");
+//                map = map.replaceAll("[^\\x00-\\x7F]", "");
                 JSONArray array = new JSONArray(map);
                 List maps = JsonHelper.toList(array);
                 List<ChannelModel> channelModels = new ArrayList<>();
@@ -319,7 +319,7 @@ public class SplashActivity extends AppCompatActivity {
                             chModel.setCategory_id(ch_m.get("category_id").toString());
                             chModel.setEpg_channel_id(epg_id);
                             chModel.setStream_icon(img_url);
-                            chModel.setTv_archive(String.valueOf(ch_m.get("tv_archive")));
+                            chModel.setTv_archive(String .valueOf(ch_m.get("tv_archive")));
                             if(ch_m.get("category_id").toString().equalsIgnoreCase(xxxcategory_id)){
                                 chModel.setIs_locked(true);
                             }else {
@@ -327,7 +327,7 @@ public class SplashActivity extends AppCompatActivity {
                             }
                             channelModels.add(chModel);
                         }catch (Exception e){
-                            Log.e("error","parse_error"+ i);
+                            Log.e("error","parse_error"+String .valueOf(i));
                         }
                     }
                 }
@@ -338,11 +338,11 @@ public class SplashActivity extends AppCompatActivity {
                 MyApp.backup_map = back_map;
                 List<FullModel> fullModels = new ArrayList<>();
                 fullModels.add(new FullModel(Constants.recent_id, getRecentChannels(channelModels), Constants.Recently_Viewed));
-                fullModels.add(new FullModel(Constants.all_id, channelModels,"All Channel"));
+                fullModels.add(new FullModel("All Channel", channelModels,"All Channel"));
                 if(MyApp.instance.getPreference().get(Constants.FAV_INFO)==null){
-                    fullModels.add(new FullModel(Constants.fav_id, new ArrayList<ChannelModel>(),"My Favorites"));
+                    fullModels.add(new FullModel("My Favorites", new ArrayList<ChannelModel>(),"My Favorites"));
                 }else {
-                    fullModels.add(new FullModel(Constants.fav_id, (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO),"My Favorites"));
+                    fullModels.add(new FullModel("My Favorites", (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO),"My Favorites"));
                     for(int i = 0;i<fullModels.get(0).getChannels().size();i++){
                         List<ChannelModel> fav = (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO);
                         for(int j=0;j< fav.size();j++){
@@ -379,13 +379,13 @@ public class SplashActivity extends AppCompatActivity {
                 MyApp.fullModels = fullModels;
                 MyApp.maindatas = datas;
             }catch (Exception e){
-                Log.e("catch","catch");
+                e.printStackTrace();
             }
             getAuthorization();
         }catch (Exception e){
             e.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(SplashActivity.this, new ConnectionDlg.DialogConnectionListener() {
+                ConnectionDlg connectionDlg = new ConnectionDlg(this, new ConnectionDlg.DialogConnectionListener() {
                     @Override
                     public void OnRetryClick(Dialog dialog) {
                         dialog.dismiss();
