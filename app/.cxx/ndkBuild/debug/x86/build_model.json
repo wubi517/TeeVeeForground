@@ -5,7 +5,6 @@
       "sdkFolder": "D:\\AndroidSdk",
       "isNativeCompilerSettingsCacheEnabled": false,
       "isBuildOnlyTargetAbiEnabled": true,
-      "ideBuildTargetAbi": "x86",
       "splitsAbiFilterSet": [],
       "intermediatesFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\build\\intermediates",
       "gradleModulePathName": ":app",
@@ -40,7 +39,9 @@
     "gradleBuildOutputFolder": "E:\\KDSIPTV\\England(newXtream)\\TeeVeeForground\\app\\.cxx\\cxx\\debug",
     "isDebuggableEnabled": true,
     "validAbiList": [
-      "X86"
+      "ARMEABI_V7A",
+      "X86",
+      "X86_64"
     ],
     "buildTargetSet": []
   },

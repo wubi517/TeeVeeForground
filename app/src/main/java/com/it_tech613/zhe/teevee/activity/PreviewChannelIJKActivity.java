@@ -5,16 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -231,19 +226,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
         wm.getDefaultDisplay().getMetrics(displayMetrics);
         mVideoHeight = displayMetrics.heightPixels;
         mVideoWidth = displayMetrics.widthPixels;
-
-        Log.e("height",String .valueOf(MyApp.SCREEN_HEIGHT));
-        if(MyApp.SCREEN_HEIGHT==720){
-            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,5),MyApp.right_margin+Utils.dp2px(this,5),0);
-        }else if(MyApp.SCREEN_HEIGHT==1440){
-            params.height = (int) (MyApp.SURFACE_HEIGHT*0.9);
-            params.width = (int) (MyApp.SURFACE_WIDTH*0.9);
-            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,10),MyApp.right_margin,0);
-        }else {
-            setMargins(ly_surface,0,MyApp.top_margin,MyApp.right_margin,0);
-        }
-
-        ly_surface.setLayoutParams(params);
+        showSmallScreenMode();
         FullScreencall();
         channels = full_datas.get(channel_pos).getChannels();
         if(channels==null || channels.size()==0){
@@ -425,23 +408,8 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
         switch (v.getId()){
             case R.id.ly_surface:
                 if(!is_full && txt_progress.getVisibility()==View.GONE){
-                    is_full = true;
-                    ViewGroup.LayoutParams params = ly_surface.getLayoutParams();
-                    params.height = MyApp.SCREEN_HEIGHT+Utils.dp2px(getApplicationContext(),50);
-                    params.width = MyApp.SCREEN_WIDTH+Utils.dp2px(getApplicationContext(),50);
-                    ly_surface.setPadding(Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
-                    setMargins(ly_surface,Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
-                    ly_surface.setLayoutParams(params);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mHandler.removeCallbacks(mUpdateTimeTask);
-                            updateProgressBar();
-                            ly_bottom.setVisibility(View.VISIBLE);
-                            listTimer();
-                        }
-                    }, 2000);
+                   is_full = true;
+                   showFullScreenMode();
                 }else if(is_full){
                     if(ly_bottom.getVisibility()==View.GONE){
                         if(pro>99){
@@ -519,27 +487,24 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                 listTimer();
                 break;
             case R.id.btn_search:
-                SearchDlg searchDlg = new SearchDlg(PreviewChannelIJKActivity.this, new SearchDlg.DialogSearchListener() {
-                    @Override
-                    public void OnSearchClick(Dialog dialog, ChannelModel sel_Channel) {
-                        dialog.dismiss();
-                        FullScreencall();
-                        for(int i = 0;i<channels.size();i++){
-                            if(channels.get(i).getName().equalsIgnoreCase(sel_Channel.getName())){
-                                sub_pos = i;
-                                break;
-                            }
+                SearchDlg searchDlg = new SearchDlg(PreviewChannelIJKActivity.this, (dialog, sel_Channel) -> {
+                    dialog.dismiss();
+                    FullScreencall();
+                    for(int i = 0;i<channels.size();i++){
+                        if(channels.get(i).getName().equalsIgnoreCase(sel_Channel.getName())){
+                            sub_pos = i;
+                            break;
                         }
-                        scrollToLast(channel_list, sub_pos);
-                        epg_pos = sub_pos;
-                        preview_pos = sub_pos;
-                        adapter.selectItem(sub_pos);
-                        MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
-                        mStream_id = channels.get(sub_pos).getStream_id();
-                        mEpgHandler.removeCallbacks(mEpgTicker);
-                        EpgTimer();
-                        playChannel();
                     }
+                    scrollToLast(channel_list, sub_pos);
+                    epg_pos = sub_pos;
+                    preview_pos = sub_pos;
+                    adapter.selectItem(sub_pos);
+                    MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
+                    mStream_id = channels.get(sub_pos).getStream_id();
+                    mEpgHandler.removeCallbacks(mEpgTicker);
+                    EpgTimer();
+                    playChannel();
                 });
                 searchDlg.show();
                 break;
@@ -556,18 +521,11 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         if(channels.get(preview_pos).getStream_id().equalsIgnoreCase(channels.get(position).getStream_id())){
-            ly_surface.setVisibility(View.VISIBLE);
-            is_full = true;
-            ViewGroup.LayoutParams params = ly_surface.getLayoutParams();
-            params.height = MyApp.SCREEN_HEIGHT+Utils.dp2px(getApplicationContext(),50);
-            params.width = MyApp.SCREEN_WIDTH+Utils.dp2px(getApplicationContext(),50);
-            ly_surface.setPadding(Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
-            setMargins(ly_surface,Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
-            ly_surface.setLayoutParams(params);
-            mHandler.removeCallbacks(mUpdateTimeTask);
-            updateProgressBar();
-            ly_bottom.setVisibility(View.VISIBLE);
-            listTimer();
+           if(is_full){
+               showSmallScreenMode();
+           }else {
+               showFullScreenMode();
+           }
         }else {
             MyApp.is_first = true;
             sub_pos = position;
@@ -579,7 +537,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
             mEpgHandler.removeCallbacks(mEpgTicker);
             EpgTimer();
             playChannel();
-            rssHandler.removeCallbacks(rssTicker);
+//            rssHandler.removeCallbacks(rssTicker);
 //            getRespond();
         }
     }
@@ -642,12 +600,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                     }catch (Exception e2){
                         txt_channel.setText("    ");
                         final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                txt_channel.setText(channels.get(sub_pos).getNum() + " " + channels.get(sub_pos).getName());
-                            }
-                        }, 5000);
+                        handler.postDelayed(() -> txt_channel.setText(channels.get(sub_pos).getNum() + " " + channels.get(sub_pos).getName()), 5000);
                     }
                     txt_date.setText(dateFormat.format(new Date()));
                     txt_time_passed.setText("      mins ago");
@@ -711,14 +664,12 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
     int maxTime;
     private void listTimer() {
         maxTime = osd_time;
-        mTicker = new Runnable() {
-            public void run() {
-                if (maxTime < 1) {
-                    ly_bottom.setVisibility(View.GONE);
-                    return;
-                }
-                runNextTicker();
+        mTicker = () -> {
+            if (maxTime < 1) {
+                ly_bottom.setVisibility(View.GONE);
+                return;
             }
+            runNextTicker();
         };
         mTicker.run();
     }
@@ -744,12 +695,10 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
     }
 
     public void doWork() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    txt_time.setText(time.format(new Date()));
-                } catch (Exception e) {
-                }
+        runOnUiThread(() -> {
+            try {
+                txt_time.setText(time.format(new Date()));
+            } catch (Exception e) {
             }
         });
     }
@@ -780,72 +729,69 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                     }else {
                         pkg_datas.set(0,"Add to Fav");
                     }
-                    PackageDlg packageDlg = new PackageDlg(PreviewChannelIJKActivity.this, pkg_datas, new PackageDlg.DialogPackageListener() {
-                        @Override
-                        public void OnItemClick(Dialog dialog, int position) {
-                            dialog.dismiss();
-                            switch (position) {
-                                case 0:
-                                    if (full_datas.get(channel_pos).getChannels().get(sub_pos).is_favorite()) {
-                                        pkg_datas.set(0, "Add to Fav");
-                                        image_star.setVisibility(View.GONE);
-                                        full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(false);
-                                        boolean is_exist = false;
-                                        int pp = 0;
-                                        for (int i = 0; i < full_datas.get(1).getChannels().size(); i++) {
-                                            if (full_datas.get(1).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
-                                                is_exist = true;
-                                                pp = i;
-                                            }
+                    PackageDlg packageDlg = new PackageDlg(PreviewChannelIJKActivity.this, pkg_datas, (dialog, position) -> {
+                        dialog.dismiss();
+                        switch (position) {
+                            case 0:
+                                if (full_datas.get(channel_pos).getChannels().get(sub_pos).is_favorite()) {
+                                    pkg_datas.set(0, "Add to Fav");
+                                    image_star.setVisibility(View.GONE);
+                                    full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(false);
+                                    boolean is_exist = false;
+                                    int pp = 0;
+                                    for (int i = 0; i < full_datas.get(1).getChannels().size(); i++) {
+                                        if (full_datas.get(1).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
+                                            is_exist = true;
+                                            pp = i;
                                         }
-                                        if (is_exist)
-                                            full_datas.get(1).getChannels().remove(pp);
-                                        MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
-                                    } else {
-                                        image_star.setVisibility(View.VISIBLE);
-                                        full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(true);
-                                        full_datas.get(1).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
-                                        MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
-                                        pkg_datas.set(0, "Remove from Fav");
                                     }
-                                    listTimer();
-                                    break;
-                                case 1:
-                                    SearchDlg searchDlg = new SearchDlg(PreviewChannelIJKActivity.this, new SearchDlg.DialogSearchListener() {
-                                        @Override
-                                        public void OnSearchClick(Dialog dialog, ChannelModel sel_Channel) {
-                                            dialog.dismiss();
-                                            FullScreencall();
-                                            for(int i = 0;i<channels.size();i++){
-                                                if(channels.get(i).getName().equalsIgnoreCase(sel_Channel.getName())){
-                                                    sub_pos = i;
-                                                    break;
-                                                }
+                                    if (is_exist)
+                                        full_datas.get(1).getChannels().remove(pp);
+                                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
+                                } else {
+                                    image_star.setVisibility(View.VISIBLE);
+                                    full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(true);
+                                    full_datas.get(1).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
+                                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
+                                    pkg_datas.set(0, "Remove from Fav");
+                                }
+                                listTimer();
+                                break;
+                            case 1:
+                                SearchDlg searchDlg = new SearchDlg(PreviewChannelIJKActivity.this, new SearchDlg.DialogSearchListener() {
+                                    @Override
+                                    public void OnSearchClick(Dialog dialog, ChannelModel sel_Channel) {
+                                        dialog.dismiss();
+                                        FullScreencall();
+                                        for(int i = 0;i<channels.size();i++){
+                                            if(channels.get(i).getName().equalsIgnoreCase(sel_Channel.getName())){
+                                                sub_pos = i;
+                                                break;
                                             }
-                                            scrollToLast(channel_list, sub_pos);
-                                            epg_pos = sub_pos;
-                                            preview_pos = sub_pos;
-                                            adapter.selectItem(sub_pos);
-                                            MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
-                                            mStream_id = channels.get(sub_pos).getStream_id();
-                                            mEpgHandler.removeCallbacks(mEpgTicker);
-                                            EpgTimer();
-                                            playChannel();
                                         }
-                                    });
-                                    searchDlg.show();
-                                    break;
-                                case 2:
-                                    break;
-                                case 3:
-                                    break;
-                                case 4:
-                                    surfaceView.toggleAspectRatio();
-                                    break;
-                                case 5:
-                                    startActivity(new Intent(PreviewChannelIJKActivity.this,WebViewActivity.class));
-                                    break;
-                            }
+                                        scrollToLast(channel_list, sub_pos);
+                                        epg_pos = sub_pos;
+                                        preview_pos = sub_pos;
+                                        adapter.selectItem(sub_pos);
+                                        MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
+                                        mStream_id = channels.get(sub_pos).getStream_id();
+                                        mEpgHandler.removeCallbacks(mEpgTicker);
+                                        EpgTimer();
+                                        playChannel();
+                                    }
+                                });
+                                searchDlg.show();
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+                                break;
+                            case 4:
+                                surfaceView.toggleAspectRatio();
+                                break;
+                            case 5:
+                                startActivity(new Intent(PreviewChannelIJKActivity.this,WebViewActivity.class));
+                                break;
                         }
                     });
                     packageDlg.show();
@@ -856,24 +802,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                         return true;
                     }
                     if(is_full){
-                        is_full = false;
-                        ly_surface.setVisibility(View.VISIBLE);
-                        mHandler.removeCallbacks(mUpdateTimeTask);
-                        ViewGroup.LayoutParams params = ly_surface.getLayoutParams();
-                        params.height = MyApp.SURFACE_HEIGHT;
-                        params.width = MyApp.SURFACE_WIDTH;
-                        if(MyApp.SCREEN_HEIGHT==720){
-                            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,5),MyApp.right_margin+Utils.dp2px(this,5),0);
-                        }else if(MyApp.SCREEN_HEIGHT==1440){
-                            params.height = (int) (MyApp.SURFACE_HEIGHT*0.9);
-                            params.width = (int) (MyApp.SURFACE_WIDTH*0.9);
-                            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,10),MyApp.right_margin,0);
-                        }else {
-                            setMargins(ly_surface,0,MyApp.top_margin,MyApp.right_margin,0);
-                        }
-//                        ly_surface.setPadding(15,15,15,15);
-                        ly_surface.setLayoutParams(params);
-                        ly_bottom.setVisibility(View.GONE);
+                        showSmallScreenMode();
                         return true;
                     }
                     releaseMediaPlayer();
@@ -923,7 +852,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                                 channel_list.setSelection(sub_pos);
                                 adapter.selectItem(sub_pos);
                                 playChannel();
-                                 rssHandler.removeCallbacks(rssTicker);
+//                                 rssHandler.removeCallbacks(rssTicker);
 //                                getRespond();
                                  return true;
                               }else {
@@ -937,7 +866,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                                  channel_list.setSelection(sub_pos);
                                  adapter.selectItem(sub_pos);
                                  playChannel();
-                                 rssHandler.removeCallbacks(rssTicker);
+//                                 rssHandler.removeCallbacks(rssTicker);
 //                                 getRespond();
                                  return true;
                              }
@@ -978,7 +907,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                                 channel_list.setSelection(sub_pos);
                                 adapter.selectItem(sub_pos);
                                 playChannel();
-                                rssHandler.removeCallbacks(rssTicker);
+//                                rssHandler.removeCallbacks(rssTicker);
 //                                getRespond();
                                 return true;
                             }else {
@@ -992,7 +921,7 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                                 channel_list.setSelection(sub_pos);
                                 adapter.selectItem(sub_pos);
                                 playChannel();
-                                rssHandler.removeCallbacks(rssTicker);
+//                                rssHandler.removeCallbacks(rssTicker);
 //                                getRespond();
                                 return true;
                             }
@@ -1016,18 +945,6 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
                     }
                     break;
                 case KeyEvent.KEYCODE_DPAD_CENTER:
-                    if(is_full){
-                        if(ly_bottom.getVisibility()==View.VISIBLE){
-                            ly_bottom.setVisibility(View.GONE);
-                            if(pro>99){
-                                mEpgHandler.removeCallbacks(mEpgTicker);
-                                EpgTimer();
-                            }
-                        }else {
-                            ly_bottom.setVisibility(View.VISIBLE);
-                        }
-                        return true;
-                    }
                     break;
                 case KeyEvent.KEYCODE_0:
                     MyApp.key = true;
@@ -1203,72 +1120,70 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
     int moveTime;
     private void moveTimer() {
         moveTime = 2;
-        moveTicker = new Runnable() {
-            public void run() {
-                if(moveTime==1){
-                    if(is_full){
-                        for(int i = 0;i<channels.size();i++){
-                            if (parseInt(channels.get(i).getNum()) == move_pos) {
-                                sel_model = channels.get(i);
-                                sub_pos = i;
-                                MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
-                                break;
-                            }
-                        }
-                        if (sel_model == null) {
-                            MyApp.key = false;
-                            key = "";
-                            num_txt.setText("");
-                            num_txt.setVisibility(View.GONE);
-                            Toast.makeText(PreviewChannelIJKActivity.this,"This category do not have this channel",Toast.LENGTH_SHORT).show();
-                            return;
-                        }else {
-                            key = "";
-                            num_txt.setText("");
-                            num_txt.setVisibility(View.GONE);
-                            mHandler.removeCallbacks(mUpdateTimeTask);
-                            mStream_id = sel_model.getStream_id();
-                            MyApp.is_first = true;
-                            channel_list.setSelection(sub_pos);
-                            adapter.selectItem(sub_pos);
-                            new Thread(()->getEpg()).start();
-                            playChannel();
-                            listTimer();
-                        }
-                    }else {
-                        for(int i = 0;i<channels.size();i++){
-                            if (parseInt(channels.get(i).getNum()) == move_pos) {
-                                sel_model = channels.get(i);
-                                sub_pos = i;
-                                MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
-                                break;
-                            }
-                        }
-                        if (sel_model == null) {
-                            MyApp.key = false;
-                            key = "";
-                            num_txt.setText("");
-                            num_txt.setVisibility(View.GONE);
-                            Toast.makeText(PreviewChannelIJKActivity.this,"This category do not have this channel",Toast.LENGTH_SHORT).show();
-                            return;
-                        }else {
-                            key = "";
-                            num_txt.setText("");
-                            num_txt.setVisibility(View.GONE);
-                            mHandler.removeCallbacks(mUpdateTimeTask);
-                            mStream_id = sel_model.getStream_id();
-                            MyApp.is_first = true;
-                            channel_list.setSelection(sub_pos);
-                            adapter.selectItem(sub_pos);
-                            new Thread(()->getEpg()).start();
-                            playChannel();
-                            listTimer();
+        moveTicker = () -> {
+            if(moveTime==1){
+                if(is_full){
+                    for(int i = 0;i<channels.size();i++){
+                        if (parseInt(channels.get(i).getNum()) == move_pos) {
+                            sel_model = channels.get(i);
+                            sub_pos = i;
+                            MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
+                            break;
                         }
                     }
-                    return;
+                    if (sel_model == null) {
+                        MyApp.key = false;
+                        key = "";
+                        num_txt.setText("");
+                        num_txt.setVisibility(View.GONE);
+                        Toast.makeText(PreviewChannelIJKActivity.this,"This category do not have this channel",Toast.LENGTH_SHORT).show();
+                        return;
+                    }else {
+                        key = "";
+                        num_txt.setText("");
+                        num_txt.setVisibility(View.GONE);
+                        mHandler.removeCallbacks(mUpdateTimeTask);
+                        mStream_id = sel_model.getStream_id();
+                        MyApp.is_first = true;
+                        channel_list.setSelection(sub_pos);
+                        adapter.selectItem(sub_pos);
+                        new Thread(()->getEpg()).start();
+                        playChannel();
+                        listTimer();
+                    }
+                }else {
+                    for(int i = 0;i<channels.size();i++){
+                        if (parseInt(channels.get(i).getNum()) == move_pos) {
+                            sel_model = channels.get(i);
+                            sub_pos = i;
+                            MyApp.instance.getPreference().put(Constants.SUB_POS,sub_pos);
+                            break;
+                        }
+                    }
+                    if (sel_model == null) {
+                        MyApp.key = false;
+                        key = "";
+                        num_txt.setText("");
+                        num_txt.setVisibility(View.GONE);
+                        Toast.makeText(PreviewChannelIJKActivity.this,"This category do not have this channel",Toast.LENGTH_SHORT).show();
+                        return;
+                    }else {
+                        key = "";
+                        num_txt.setText("");
+                        num_txt.setVisibility(View.GONE);
+                        mHandler.removeCallbacks(mUpdateTimeTask);
+                        mStream_id = sel_model.getStream_id();
+                        MyApp.is_first = true;
+                        channel_list.setSelection(sub_pos);
+                        adapter.selectItem(sub_pos);
+                        new Thread(()->getEpg()).start();
+                        playChannel();
+                        listTimer();
+                    }
                 }
-                moveNextTicker();
+                return;
             }
+            moveNextTicker();
         };
         moveTicker.run();
     }
@@ -1440,5 +1355,36 @@ public class PreviewChannelIJKActivity extends AppCompatActivity implements  Ada
         editor1.putInt("SUB_TRACK", 0);
         releaseMediaPlayer();
     }
-
+    private void showSmallScreenMode(){
+        is_full = false;
+        ly_surface.setVisibility(View.VISIBLE);
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        ViewGroup.LayoutParams params = ly_surface.getLayoutParams();
+        params.height = MyApp.SURFACE_HEIGHT;
+        params.width = MyApp.SURFACE_WIDTH;
+        if(MyApp.SCREEN_HEIGHT==720){
+            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,5),MyApp.right_margin+Utils.dp2px(this,5),0);
+        }else if(MyApp.SCREEN_HEIGHT==1440){
+            params.height = (int) (MyApp.SURFACE_HEIGHT*0.9);
+            params.width = (int) (MyApp.SURFACE_WIDTH*0.9);
+            setMargins(ly_surface,0,MyApp.top_margin-Utils.dp2px(this,10),MyApp.right_margin,0);
+        }else {
+            setMargins(ly_surface,0,MyApp.top_margin,MyApp.right_margin,0);
+        }
+        ly_surface.setLayoutParams(params);
+        ly_bottom.setVisibility(View.GONE);
+    }
+    private void showFullScreenMode(){
+        is_full = true;
+        ViewGroup.LayoutParams params = ly_surface.getLayoutParams();
+        params.height = MyApp.SCREEN_HEIGHT+Utils.dp2px(getApplicationContext(),50);
+        params.width = MyApp.SCREEN_WIDTH+Utils.dp2px(getApplicationContext(),50);
+        ly_surface.setPadding(Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
+        setMargins(ly_surface,Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0),Utils.dp2px(this,0));
+        ly_surface.setLayoutParams(params);
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        updateProgressBar();
+        ly_bottom.setVisibility(View.VISIBLE);
+        listTimer();
+    }
 }

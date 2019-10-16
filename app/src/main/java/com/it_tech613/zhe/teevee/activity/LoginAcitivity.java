@@ -116,8 +116,8 @@ public class LoginAcitivity extends AppCompatActivity implements View.OnClickLis
             new Thread(this::callLogin).start();
         }
         name_txt.requestFocus();
-//        name_txt.setText("GYD167439");
-//        pass_txt.setText("nLLJmIjOCd");
+//        name_txt.setText("Amaher378074");
+//        pass_txt.setText("940063719973");
         TextView mac_txt = findViewById(R.id.login_mac_address);
         mac_txt.setText(MyApp.mac_address);
         TextView version_txt = (TextView) findViewById(R.id.app_version_code);

@@ -131,24 +131,16 @@ public class SplashActivity extends AppCompatActivity {
                 e.printStackTrace();
                 runOnUiThread(() ->{
                     Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(this,LoginAcitivity.class));
+                    finish();
                 } );
             }
         } catch (Exception e0) {
             e0.printStackTrace();
             runOnUiThread(() -> {
-                ConnectionDlg connectionDlg = new ConnectionDlg(this, new ConnectionDlg.DialogConnectionListener() {
-                    @Override
-                    public void OnRetryClick(Dialog dialog) {
-                        dialog.dismiss();
-                        new Thread(() -> callLogin()).start();
-                    }
-
-                    @Override
-                    public void OnHelpClick(Dialog dialog) {
-                        startActivity(new Intent(SplashActivity.this, ConnectionErrorActivity.class));
-                    }
-                });
-                connectionDlg.show();
+                Toast.makeText(getApplicationContext(), "Username is incorrect", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this,LoginAcitivity.class));
+                finish();
             });
         }
     }
@@ -327,7 +319,7 @@ public class SplashActivity extends AppCompatActivity {
                             }
                             channelModels.add(chModel);
                         }catch (Exception e){
-                            Log.e("error","parse_error"+String .valueOf(i));
+                            Log.e("error","parse_error"+ i);
                         }
                     }
                 }
