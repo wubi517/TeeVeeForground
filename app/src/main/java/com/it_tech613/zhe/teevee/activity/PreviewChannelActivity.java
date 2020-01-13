@@ -509,28 +509,28 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
                     full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(false);
                     boolean is_exist = false;
                     int pp = 0;
-                    for (int i = 0; i < full_datas.get(1).getChannels().size(); i++) {
-                        if (full_datas.get(1).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
+                    for (int i = 0; i < full_datas.get(2).getChannels().size(); i++) {
+                        if (full_datas.get(2).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
                             is_exist = true;
                             pp = i;
                         }
                     }
                     if (is_exist)
-                        full_datas.get(1).getChannels().remove(pp);
-                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
+                        full_datas.get(2).getChannels().remove(pp);
+                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(2).getChannels());
                 } else {
                     image_star.setVisibility(View.VISIBLE);
                     full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(true);
-                    full_datas.get(1).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
-                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
+                    full_datas.get(2).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
+                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(2).getChannels());
                     pkg_datas.set(0, "Remove from Fav");
                 }
-                channels = full_datas.get(channel_pos).getChannels();
-                adapter = new MainListAdapter(PreviewChannelActivity.this,channels);
-                channel_list.setAdapter(adapter);
-                channel_list.setSelection(sub_pos);
-                MyApp.is_first = true;
-                adapter.selectItem(sub_pos);
+//                channels = full_datas.get(channel_pos).getChannels();
+//                adapter = new MainListAdapter(PreviewChannelActivity.this,channels);
+//                channel_list.setAdapter(adapter);
+//                channel_list.setSelection(sub_pos);
+//                MyApp.is_first = true;
+                adapter.notifyDataSetChanged();
                 listTimer();
                 break;
             case R.id.btn_search:
@@ -809,22 +809,23 @@ public class PreviewChannelActivity extends AppCompatActivity implements  Adapte
                                     full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(false);
                                     boolean is_exist = false;
                                     int pp = 0;
-                                    for (int i = 0; i < full_datas.get(1).getChannels().size(); i++) {
-                                        if (full_datas.get(1).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
+                                    for (int i = 0; i < full_datas.get(2).getChannels().size(); i++) {
+                                        if (full_datas.get(2).getChannels().get(i).getName().equals(full_datas.get(channel_pos).getChannels().get(sub_pos).getName())) {
                                             is_exist = true;
                                             pp = i;
                                         }
                                     }
                                     if (is_exist)
-                                        full_datas.get(1).getChannels().remove(pp);
+                                        full_datas.get(2).getChannels().remove(pp);
                                     MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
                                 } else {
                                     image_star.setVisibility(View.VISIBLE);
                                     full_datas.get(channel_pos).getChannels().get(sub_pos).setIs_favorite(true);
-                                    full_datas.get(1).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
-                                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(1).getChannels());
+                                    full_datas.get(2).getChannels().add(full_datas.get(channel_pos).getChannels().get(sub_pos));
+                                    MyApp.instance.getPreference().put(Constants.FAV_INFO, full_datas.get(2).getChannels());
                                     pkg_datas.set(0, "Remove from Fav");
                                 }
+                                adapter.notifyDataSetChanged();
                                 listTimer();
                                 break;
                             case 1:

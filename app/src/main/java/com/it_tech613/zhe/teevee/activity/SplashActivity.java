@@ -335,13 +335,12 @@ public class SplashActivity extends AppCompatActivity {
                     fullModels.add(new FullModel("My Favorites", new ArrayList<ChannelModel>(),"My Favorites"));
                 }else {
                     fullModels.add(new FullModel("My Favorites", (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO),"My Favorites"));
-                    for(int i = 0;i<fullModels.get(0).getChannels().size();i++){
+                    for(int i = 0;i<fullModels.get(1).getChannels().size();i++){
                         List<ChannelModel> fav = (List<ChannelModel>) MyApp.instance.getPreference().get(Constants.FAV_INFO);
                         for(int j=0;j< fav.size();j++){
-                            if(fullModels.get(0).getChannels().get(i).getName().equals(fav.get(j).getName())){
-                                fullModels.get(0).getChannels().get(i).setIs_favorite(true);
-                            }else {
-                                fullModels.get(0).getChannels().get(i).setIs_favorite(false);
+                            if(fullModels.get(1).getChannels().get(i).getName().equalsIgnoreCase(fav.get(j).getName())){
+                                fullModels.get(1).getChannels().get(i).setIs_favorite(true);
+                                break;
                             }
                         }
                     }

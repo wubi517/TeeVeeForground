@@ -2,8 +2,8 @@
 2<manifest xmlns:amazon="http://schemas.amazon.com/apk/res/android"
 3    xmlns:android="http://schemas.android.com/apk/res/android"
 4    package="com.it_tech613.zhe.teevee"
-5    android:versionCode="6"
-6    android:versionName="1.5" >
+5    android:versionCode="7"
+6    android:versionName="1.6" >
 7
 8    <uses-sdk
 9        android:minSdkVersion="21"
@@ -53,7 +53,7 @@
 28        android:allowBackup="true"
 28-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:24:9-35
 29        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
-29-->[com.android.support:support-compat:28.0.0] C:\Users\kimcm\.gradle\caches\transforms-2\files-2.1\25b56a28b08984a48b2985851fda21a7\support-compat-28.0.0\AndroidManifest.xml:22:18-91
+29-->[com.android.support:support-compat:28.0.0] C:\Users\kimcm\.gradle\caches\transforms-2\files-2.1\670e7f0a4321eaf28c92e3849f2db1d6\support-compat-28.0.0\AndroidManifest.xml:22:18-91
 30        android:debuggable="true"
 31        android:hardwareAccelerated="false"
 31-->E:\KDSIPTV\England(newXtream)\TeeVeeForground\app\src\main\AndroidManifest.xml:31:9-44
